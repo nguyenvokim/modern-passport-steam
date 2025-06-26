@@ -81,7 +81,8 @@ class SteamStrategy extends Strategy {
 			: await this._apiKey(SteamID);
 
 		const user = {
-			SteamID
+			SteamID,
+			steamId64,
 		};
 
 		if(this._fetchUserProfile) {

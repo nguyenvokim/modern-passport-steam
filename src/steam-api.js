@@ -45,7 +45,7 @@ const fetchSteamProfile = async (steamId, apiKey) => {
 	const data = await returnFetchResponse(response);
 
 	const profile = data?.response?.players?.find(profile => profile.steamid === steamId);
-	assert(profile, 'There was an error fetching your steam profile.');
+	// assert(profile, 'There was an error fetching your steam profile.');
 
 	return profile;
 };
