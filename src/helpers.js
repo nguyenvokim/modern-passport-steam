@@ -3,16 +3,27 @@ const SteamID = require('steamid');
 
 const { REQUIRED_PARAMS, REQUIRED_SIGNED_PARAMS } = require('./constants');
 
+// Only these hosts may ever be treated as a valid Steam OpenID realm.
+const ALLOWED_REALM_HOSTS = ['connect-tradeit.com', 'stg.connect-tradeit.com'];
+
 /**
  * Canonicalizes a realm URL
  * @param {string} realm - The realm to canonicalize
  * @returns {string} The canonicalized realm
  */
 function canonicalizeRealm(realm) {
-	const match = realm.match(/^(https?:\/\/[^:/]+)/);
-	assert(match, `"${realm}" does not appear to be a valid realm`);
+	let parsed;
+	try{
+		parsed = new URL(realm);
+	} catch(err) {
+		assert(false, `"${realm}" does not appear to be a valid realm`);
+	}
 
-	return match[1].toLowerCase();
+	const { protocol, hostname } = parsed;
+	const isValid = protocol === 'https:' && ALLOWED_REALM_HOSTS.includes(hostname);
+	assert(isValid, `"${realm}" does not appear to be a valid realm`);
+
+	return `${protocol}//${hostname}`;
 }
 
 /**
