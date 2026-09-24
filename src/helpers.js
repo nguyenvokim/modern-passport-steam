@@ -16,12 +16,12 @@ function canonicalizeRealm(realm) {
 	try{
 		parsed = new URL(realm);
 	} catch(err) {
-		assert(false, `"${realm}" does not appear to be a valid realm`);
+		assert(false, 'Response was not validated by Steam. It may be forged or reused.');
 	}
 
 	const { protocol, hostname } = parsed;
 	const isValid = protocol === 'https:' && ALLOWED_REALM_HOSTS.includes(hostname);
-	assert(isValid, `"${realm}" does not appear to be a valid realm`);
+	assert(isValid, 'Response was not validated by Steam. It may be forged or reused.');
 
 	return `${protocol}//${hostname}`;
 }
